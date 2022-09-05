@@ -2,6 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 
 import router from './router'
+import {createPinia} from 'pinia'
 import ElementPlus from './plugins/element-plus'
 import i18n from './i18n'
 
@@ -10,8 +11,11 @@ import 'reset.css'
 import 'animate.css'
 import 'virtual:windi.css'
 
+
 const app = createApp(App)
 
-app.use(router).use(ElementPlus).use(i18n)
-
-app.mount('#app')
+app.use(router)
+    .use(ElementPlus)
+    .use(i18n)
+    .use(createPinia())
+    .mount('#app')
