@@ -3,16 +3,17 @@ html, body, #app {
   margin: 0;
   padding: 0;
   height: 100%;
-}
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 
-a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
+  a {
+    text-decoration: none;
+    color: #333;
+  }
 
-ul, li {
-  list-style: none;
+  ul, li {
+    list-style: none;
+  }
+
 }
 
 /*设置滚动条样式*/
@@ -35,5 +36,5 @@ ul, li {
 
 /*设置进度条颜色  不配置时为默认颜色*/
 #nprogress .bar {
-  /*background: rgba(41, 236, 127, 0.5) !important;*/
+  //background: rgba(41, 236, 127, 0.5) !important;
 }
