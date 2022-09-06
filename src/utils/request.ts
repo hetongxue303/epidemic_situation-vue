@@ -2,6 +2,7 @@ import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {ElMessage, ElNotification} from 'element-plus'
 import {useRouter} from 'vue-router'
 import * as nProgress from 'nprogress'
+import {useUserStore} from "../store/modules/user";
 
 axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -13,11 +14,12 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
     nProgress.start()
-    // if (useMainStore().getAuthorization && localStorage.getItem('Authorization')) {
-    //     if (config.headers) {
-    //         config.headers.Authorization = useMainStore().getAuthorization
-    //     }
-    // }
+    // 判断用户是否登录 若已登录则每次请求都加上token信息在头部
+    if (useUserStore().getAuthorization && localStorage.getItem('Authorization')) {
+        if (config.headers) {
+            config.headers.Authorization = useUserStore().getAuthorization
+        }
+    }
     return config;
 }, ((error: any) => {
     ElNotification.error('请求错误！')
