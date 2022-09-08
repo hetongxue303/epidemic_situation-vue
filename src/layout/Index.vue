@@ -8,10 +8,10 @@
         <Header/>
       </el-header>
       <el-main>
-        主体
+        <router-view/>
       </el-main>
       <el-footer height="30px">
-        脚部
+        <Footer/>
       </el-footer>
     </el-container>
   </el-container>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import Sidebar from '@layout/sidebar/Index.vue'
 import Header from '@layout/header/Index.vue'
+import Footer from '@layout/footer/Index.vue'
 
 import {useUserStore} from '../store/modules/user'
 
@@ -43,6 +44,8 @@ const userStore = useUserStore()
 .el-main {
   height: 100%;
   width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .el-footer {
