@@ -5,7 +5,7 @@
     </el-aside>
     <el-container>
       <el-header height="50px">
-        头部
+        <Header/>
       </el-header>
       <el-main>
         主体
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import Sidebar from '@layout/sidebar/Index.vue'
+import Header from '@layout/header/Index.vue'
 
 import {useUserStore} from '../store/modules/user'
 
