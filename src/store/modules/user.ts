@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia'
+import {menuList} from "../../layout/data/menuList";
 
 interface userStoreTypes {
     Authorization: string,// token信息
@@ -10,7 +11,7 @@ export const useUserStore = defineStore('user', {
     state: (): userStoreTypes => {
         return {
             Authorization: localStorage.getItem('Authorization') || '',
-            menus: [],
+            menus: menuList || [],
             collapse: false
         }
     },

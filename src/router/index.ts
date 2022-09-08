@@ -19,12 +19,12 @@ const routes: Array<RouteRecordRaw> = [
             keepAlive: true,
             requireAuth: false
         },
-        component: () => import('@views/login.vue')
+        component: () => import('@views/Login.vue')
     },
     {
         path: '/',
         name: 'layout',
-        component: () => import('@layout/index.vue'),
+        component: () => import('@layout/Index.vue'),
         redirect: '/dashboard',
         meta: {
             keepAlive: true,
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
                     keepAlive: true,
                     requireAuth: true
                 },
-                component: () => import('@views/dashboard/index.vue')
+                component: () => import('@views/dashboard/Index.vue')
             }
         ]
     }
@@ -53,15 +53,16 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     NProgress.start()
     // 如果请求地址为/login 或 不需要授权 放行
-    if (to.path === '/login' || !to.meta.requireAuth) {
-        next()
-        // 如果localStorage 或 store中存在token 放行
-    } else if (localStorage.getItem('Authorization')) {
-        next()
-        // 否则要求登录
-    } else {
-        next('/login')
-    }
+    // if (to.path === '/login' || !to.meta.requireAuth) {
+    //     next()
+    //     // 如果localStorage 或 store中存在token 放行
+    // } else if (localStorage.getItem('Authorization')) {
+    //     next()
+    //     // 否则要求登录
+    // } else {
+    //     next('/login')
+    // }
+    next()
 })
 
 router.afterEach(() => {
