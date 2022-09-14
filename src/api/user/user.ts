@@ -3,10 +3,10 @@ import * as qs from 'qs'
 
 const baseAPI = import.meta.env.VITE_BASE_API
 
-const login = (data: any) => {
+export const user = (data: any) => {
     return axios({
         method: 'POST',
-        url: baseAPI + '/login',
+        url: baseAPI + '/auth/login',
         data: qs.stringify(data),
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -14,6 +14,9 @@ const login = (data: any) => {
     })
 }
 
-export {
-    login
+export const getCode=()=>{
+    return axios({
+        method:'GET',
+        url:baseAPI+'/auth/getCode',
+    })
 }

@@ -4,7 +4,7 @@ import NProgress from '../plugins/nProgress'
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/login'
+        redirect: '/user'
     },
     {
         path: '/:pathMatch(.*)*',
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@views/error/404.vue')
     },
     {
-        path: '/login',
+        path: '/user',
         name: 'login',
         meta: {
             title: '用户登录',
@@ -52,15 +52,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
-    // 如果请求地址为/login 或 不需要授权 放行
-    // if (to.path === '/login' || !to.meta.requireAuth) {
+    // 如果请求地址为/user 或 不需要授权 放行
+    // if (to.path === '/user' || !to.meta.requireAuth) {
     //     next()
     //     // 如果localStorage 或 store中存在token 放行
     // } else if (localStorage.getItem('Authorization')) {
     //     next()
     //     // 否则要求登录
     // } else {
-    //     next('/login')
+    //     next('/user')
     // }
     next()
 })

@@ -32,7 +32,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
         case 401: {
             ElMessage.warning('请先登录')
             const router = useRouter()
-            router.push('/login')
+            router.push('/user')
             break
         }
         case 403: {

@@ -33,6 +33,8 @@ const userStore = useUserStore()
 }
 
 .el-aside {
+  padding: 0;
+  margin: 0;
 }
 
 .el-header {
