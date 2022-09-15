@@ -18,8 +18,10 @@
           <component is="FullScreen"/>
         </el-icon>
       </div>
+
       <!--个人中心-->
-      <!--      <Center/>-->
+      <Center/>
+
       <div class="setting" @click="settingHandler">
         <el-icon :size="15">
           <component is="setting"/>
@@ -31,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+import Center from '@layout/header/center.vue'
+
 import {ElMessage} from 'element-plus'
 import {useUserStore} from '../../store/modules/user'
 

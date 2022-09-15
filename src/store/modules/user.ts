@@ -1,18 +1,20 @@
 import {defineStore} from 'pinia'
-import {menuList} from "../../layout/data/menuList";
+import {IMenu} from '../../utils/permission/types'
 
 interface userStoreTypes {
     Authorization: string,// token信息
-    menus: Array<any>,// 菜单列表
+    menus: Array<IMenu>,// 菜单列表
     collapse: boolean// 折叠面板
+    language: string
 }
 
 export const useUserStore = defineStore('user', {
     state: (): userStoreTypes => {
         return {
             Authorization: localStorage.getItem('Authorization') || '',
-            menus: menuList || [],
-            collapse: false
+            menus: [],
+            collapse: false,
+            language: localStorage.getItem('language') || ''
         }
     },
     getters: {
@@ -44,6 +46,10 @@ export const useUserStore = defineStore('user', {
             localStorage.removeItem('Authorization')
             this.Authorization = ''
         },
+        // 清除相关信息
+        clearRelatedInfo() {
+            localStorage.removeItem('language')
+        },
         // 用户注销登录(清除信息)
         userLogout() {
             this.clearAuthorization()
@@ -51,7 +57,7 @@ export const useUserStore = defineStore('user', {
             this.collapse = false
         },
         // 存储菜单列表
-        saveMenus(menus: Array<any>) {
+        saveMenus(menus: Array<IMenu>) {
             this.menus = menus
         },
         // 清空菜单列表

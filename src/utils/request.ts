@@ -15,10 +15,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
     nProgress.start()
     // 判断用户是否登录 若已登录则每次请求都加上token信息在头部
-    if (useUserStore().getAuthorization && localStorage.getItem('Authorization')) {
-        if (config.headers) {
-            config.headers.Authorization = useUserStore().getAuthorization
-        }
+    if (useUserStore().getAuthorization && localStorage.getItem('Authorization') && config.headers) {
+        config.headers.Authorization = useUserStore().getAuthorization
     }
     return config;
 }, ((error: any) => {

@@ -56,15 +56,17 @@
 
 <script setup lang="ts">
 import {onMounted, reactive, ref, watch} from 'vue'
-import {getCode, user} from '../api/user/user'
+import {getCode, login} from '../api/user/user'
 import {ElMessage, FormInstance, FormRules} from 'element-plus'
-import {useRouter} from "vue-router";
+import {useRouter} from 'vue-router'
 import {useUserStore} from '../store/modules/user'
+import {json} from "stream/consumers";
+import {updateMenu, updateRouter} from "../utils/permission/permission";
 
 // 表单数据
 const loginForm = reactive<any>({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: '123456',
   code: ''
 })
 
@@ -103,15 +105,21 @@ const loginHandler = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid) => {
     if (valid) {
       // 登录请求
-      const {data, headers} = await user(loginForm);
-      if (data.code === 200) {
-        userStore.saveAuthorization(headers.authorization)
-        ElMessage.success('登陆成功')
-        await router.push('/dashboard');
-      } else {
-        ElMessage.warning(data.message)
-        await changeImageCode()
-        loginForm.code = ''
+      const {data, headers} = await login(loginForm);
+      switch (data.code as number) {
+        case 200:
+          userStore.saveAuthorization(headers.authorization)
+          ElMessage.success('登陆成功')
+          // 更新路由
+          // updateRouter(data.data.routers)
+          // 更新菜单
+          updateMenu(data.data.menus)
+          await router.push('/dashboard');
+          break
+        default:
+          ElMessage.warning(data.message)
+          await changeImageCode()
+          loginForm.code = ''
       }
     }
   })
