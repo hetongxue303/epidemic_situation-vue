@@ -55,13 +55,12 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref, watch} from 'vue'
+import {defineAsyncComponent, onMounted, reactive, ref, watch} from 'vue'
 import {getCode, login} from '../api/user/user'
 import {ElMessage, FormInstance, FormRules} from 'element-plus'
 import {useRouter} from 'vue-router'
 import {useUserStore} from '../store/modules/user'
-import {json} from "stream/consumers";
-import {updateMenu, updateRouter} from "../utils/permission/permission";
+import md5 from 'js-md5'
 
 // 表单数据
 const loginForm = reactive<any>({
@@ -75,11 +74,11 @@ const ruleFormRef = ref<FormInstance>()
 const rules = reactive<FormRules>({
   username: [
     {required: true, message: '账号不能为空', trigger: 'blur'},
-    {min: 3, max: 20, message: '账号长度为3到20', trigger: 'blur'}
+    {min: 2, max: 20, message: '账号长度为2到20', trigger: 'blur'}
   ],
   password: [
     {required: true, message: '密码不能为空', trigger: 'blur'},
-    {min: 3, max: 20, message: '密码长度为3到20', trigger: 'blur'}
+    {min: 6, max: 50, message: '密码长度为6到50', trigger: 'blur'}
   ],
   code: [
     {required: true, message: '验证码不能为空', trigger: 'blur'}
@@ -105,15 +104,20 @@ const loginHandler = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid) => {
     if (valid) {
       // 登录请求
-      const {data, headers} = await login(loginForm);
+      const {data, headers} = await login({
+        username: loginForm.username,
+        // 密码加密
+        password: md5(md5(loginForm.password).split('').reverse().join('')),
+        code: loginForm.code
+      })
       switch (data.code as number) {
         case 200:
           userStore.saveAuthorization(headers.authorization)
           ElMessage.success('登陆成功')
-          // 更新路由
-          // updateRouter(data.data.routers)
-          // 更新菜单
-          updateMenu(data.data.menus)
+          // 保存路由信息到store
+          userStore.saveRouters(data.data.routers)
+          // 保存菜单信息到store
+          userStore.saveMenus(data.data.menus)
           await router.push('/dashboard');
           break
         default:

@@ -1,11 +1,13 @@
 import {defineStore} from 'pinia'
-import {IMenu} from '../../utils/permission/types'
+import {IMenu, IRouter} from '../../utils/permission/types'
+import {RouteRecordRaw} from 'vue-router'
 
 interface userStoreTypes {
     Authorization: string,// token信息
     menus: Array<IMenu>,// 菜单列表
+    routers: Array<IRouter>// 路由列表
     collapse: boolean// 折叠面板
-    language: string
+    language: string// 系统语言
 }
 
 export const useUserStore = defineStore('user', {
@@ -13,6 +15,7 @@ export const useUserStore = defineStore('user', {
         return {
             Authorization: localStorage.getItem('Authorization') || '',
             menus: [],
+            routers: [],
             collapse: false,
             language: localStorage.getItem('language') || ''
         }
@@ -29,6 +32,10 @@ export const useUserStore = defineStore('user', {
         // 获取菜单列表
         getMenus(state) {
             return state.menus
+        },
+        // 获取路由列表
+        getRouters(state) {
+            return state.routers
         }
     },
     actions: {
@@ -58,7 +65,21 @@ export const useUserStore = defineStore('user', {
         },
         // 存储菜单列表
         saveMenus(menus: Array<IMenu>) {
-            this.menus = menus
+            let defaultMenu: Array<IMenu> = [
+                {
+                    name: '首页',
+                    path: '/dashboard',
+                    icon: 'location'
+                }
+            ]
+            menus.forEach(item => {
+                defaultMenu.push(item)
+            })
+            this.menus = defaultMenu
+        },
+        // 存储路由列表
+        saveRouters(routerList: Array<IRouter>) {
+            this.routers = routerList
         },
         // 清空菜单列表
         clearMenus() {
